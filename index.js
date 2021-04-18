@@ -12,9 +12,8 @@ const app = express()
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static('tours'));
-app.use(fileUpload());
 
-const port = 5000
+const port = 5000;
 
 
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
