@@ -23,12 +23,11 @@ client.connect(err => {
     const bookingCollection = client.db(`${process.env.DB_NAME}`).collection("booking");
     const reviewCollection = client.db(`${process.env.DB_NAME}`).collection("reviews");
 
-    console.log("database connected");
-
     app.get('/', (req, res) => {
         res.send("It's Working");
     })
 
+    // For adding new tour in the database
     app.post('/addTour', (req, res) => {
         const tourData = req.body;
         toursCollection.insertOne(tourData)
@@ -37,6 +36,7 @@ client.connect(err => {
             })
     })
 
+    // For adding new admin in the database
     app.post('/addAdmin', (req, res) => {
         const adminData = req.body;
         adminCollection.insertOne(adminData)
@@ -45,6 +45,7 @@ client.connect(err => {
             })
     })
 
+    // For adding new booking in the database
     app.post('/addBooking', (req, res) => {
         const bookingData = req.body;
         bookingCollection.insertOne(bookingData)
@@ -53,6 +54,7 @@ client.connect(err => {
             })
     })
 
+    // Load all bookings from the database
     app.post('/bookings', (req, res) => {
         const email = req.body.email;
         const isAdmin = req.body.isAdmin;
@@ -66,6 +68,7 @@ client.connect(err => {
             })
     })
 
+    // For adding new review in the database
     app.post('/addReview', (req, res) => {
         const review = req.body;
         reviewCollection.insertOne(review)
@@ -74,6 +77,7 @@ client.connect(err => {
             })
     })
 
+    // checking logged in user is admin or not
     app.post('/isAdmin', (req, res) => {
         const email = req.body.email;
         adminCollection.find({ email: email })
@@ -82,6 +86,7 @@ client.connect(err => {
             })
     })
 
+    // Search tours from the database by destination and type
     app.post('/toursByDestination', (req, res) => {
         const location = req.body.location;
         const type = req.body.type;
@@ -95,6 +100,7 @@ client.connect(err => {
             })
     })
 
+    // Search tour by title
     app.post('/tourSearch', (req, res) => {
         const title = req.body.search;
         toursCollection.find({title: new RegExp(title, 'i')})
@@ -103,6 +109,7 @@ client.connect(err => {
             })
     })
 
+    // Load all tours from the database
     app.get('/tours', (req, res) => {
         toursCollection.find({})
             .toArray((err, documents) => {
@@ -110,6 +117,7 @@ client.connect(err => {
             })
     })
 
+    // Load all reviews from the database
     app.get('/reviews', (req, res) => {
         reviewCollection.find({})
             .toArray((err, documents) => {
@@ -117,6 +125,7 @@ client.connect(err => {
             })
     })
 
+    // Load individual tour by id
     app.get('/tourById/:id', (req, res) => {
         const id = req.params.id;
         toursCollection.find({ _id: ObjectId(id) })
@@ -125,6 +134,7 @@ client.connect(err => {
             })
     })
 
+    // delete tour by id
     app.delete('/deleteTour/:id', (req, res) => {
         toursCollection.deleteOne({ _id: ObjectId(req.params.id) })
             .then(result => {
@@ -132,6 +142,7 @@ client.connect(err => {
             })
     })
 
+    // Update booking status by id
     app.patch('/updateBooking', (req, res) => {
         const id = req.body.id;
         const status = req.body.status;
