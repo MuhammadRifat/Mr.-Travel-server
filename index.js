@@ -97,6 +97,14 @@ client.connect(err => {
             })
     })
 
+    app.post('/tourSearch', (req, res) => {
+        const title = req.body.search;
+        toursCollection.find({title: new RegExp(title, 'i')})
+            .toArray((err, documents) => {
+                res.send(documents);
+            })
+    })
+
     app.get('/tours', (req, res) => {
         toursCollection.find({})
             .toArray((err, documents) => {
